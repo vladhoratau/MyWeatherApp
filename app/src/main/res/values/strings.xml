@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MyWeatherApp</string>
-
+    <string name="open_weather_root">https://api.openweathermap.org/data/2.5/</string>
+    <string name="api_key">5655a7bd5e80b0d2e5f243324b69d86b</string>
+    <string name="search_hint">Location</string>
+    <string name="temp_unit">°C/°F</string>
+    <string name="favourite_location">Favourite</string>
+    <string name="dataPassed">Successfully data passed</string>
 </resources>

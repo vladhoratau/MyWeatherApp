@@ -1,14 +1,12 @@
 package com.example.myweatherapp.services;
 
-import com.example.myweatherapp.models.CurrentWeather;
-
-import java.util.List;
+import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface CurrentWeatherData {
+public interface CurrentWeatherDataService {
     @GET("weather")
-    Call<CurrentWeather> getCurrentWeather(@Query("q") String cityName, @Query("appid") String appId, @Query("units") String units);
+    Call<CurrentWeatherResponse> getCurrentWeather(@Query("q") String cityName, @Query("appid") String appId, @Query("units") String units);
 }

@@ -1,7 +1,7 @@
 package com.example.myweatherapp.views.activities;
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
-import com.example.myweatherapp.services.GoogleService;
+import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.views.fragments.CurrentLocationFragment;
 import com.example.myweatherapp.views.fragments.LocationsFragment;
 
@@ -15,7 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ViewPagerAdapter viewPagerAdapter;

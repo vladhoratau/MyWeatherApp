@@ -1,10 +1,12 @@
-package com.example.myweatherapp.models;
+package com.example.myweatherapp.models.currentWeather;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 
-public class CurrentWeather {
+
+public class CurrentWeatherResponse {
     @SerializedName("coord")
     @Expose
     private Coordinates coordinates;
@@ -13,39 +15,35 @@ public class CurrentWeather {
     @Expose
     private String cityName;
 
-    @SerializedName("weather.description")
+    @SerializedName("weather")
     @Expose
-    private String description;
+    private List<Weather> weather;
 
-    @SerializedName("main.temp")
+    @SerializedName("main")
     @Expose
-    private Double temp;
+    private MainWeatherParams mainWeatherParams;
 
-
-    public CurrentWeather(Coordinates coordinates, String cityName, String description, Double temp) {
+    public CurrentWeatherResponse(Coordinates coordinates, String cityName, List<Weather> weather, MainWeatherParams mainWeatherParams) {
         this.coordinates = coordinates;
         this.cityName = cityName;
-        this.description = description;
-        this.temp = temp;
+        this.weather = weather;
+        this.mainWeatherParams = mainWeatherParams;
     }
 
     public Coordinates getCoordinates() {
         return coordinates;
     }
 
-
     public String getCityName() {
         return cityName;
     }
 
-
-    public String getDescription() {
-        return description;
+    public List<Weather> getWeather() {
+        return weather;
     }
 
-
-    public Double getTemp() {
-        return temp;
+    public MainWeatherParams getMainWeatherParams() {
+        return mainWeatherParams;
     }
 
 

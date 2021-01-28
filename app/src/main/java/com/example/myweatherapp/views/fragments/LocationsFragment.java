@@ -24,11 +24,7 @@ public class LocationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         t1 = view.findViewById(R.id.t1);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         t1.setText("Locations fragment");
     }
+
 }
