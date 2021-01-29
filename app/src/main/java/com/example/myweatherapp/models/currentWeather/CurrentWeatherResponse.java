@@ -23,11 +23,16 @@ public class CurrentWeatherResponse {
     @Expose
     private MainWeatherParams mainWeatherParams;
 
-    public CurrentWeatherResponse(Coordinates coordinates, String cityName, List<Weather> weather, MainWeatherParams mainWeatherParams) {
+    @SerializedName("sys")
+    @Expose
+    private Country country;
+
+    public CurrentWeatherResponse(Coordinates coordinates, String cityName, List<Weather> weather, MainWeatherParams mainWeatherParams, Country country) {
         this.coordinates = coordinates;
         this.cityName = cityName;
         this.weather = weather;
         this.mainWeatherParams = mainWeatherParams;
+        this.country = country;
     }
 
     public Coordinates getCoordinates() {
@@ -44,6 +49,10 @@ public class CurrentWeatherResponse {
 
     public MainWeatherParams getMainWeatherParams() {
         return mainWeatherParams;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 
 

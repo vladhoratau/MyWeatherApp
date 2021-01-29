@@ -1,6 +1,8 @@
 package com.example.myweatherapp.utils;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
 
 public class ApplicationClass extends Application {
 
@@ -14,5 +16,11 @@ public class ApplicationClass extends Application {
 
     public static ApplicationClass getInstance() {
         return applicationClass;
+    }
+
+    public boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

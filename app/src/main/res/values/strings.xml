@@ -6,4 +6,5 @@
     <string name="temp_unit">°C/°F</string>
     <string name="favourite_location">Favourite</string>
     <string name="dataPassed">Successfully data passed</string>
+    <string name="iconRoot">https://openweathermap.org/img/w/</string>
 </resources>

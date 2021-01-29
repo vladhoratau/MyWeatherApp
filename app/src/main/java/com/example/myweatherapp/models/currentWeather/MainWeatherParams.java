@@ -21,8 +21,16 @@ public class MainWeatherParams {
         return temp;
     }
 
+    public Integer getIntTemp() {
+        return getTemp().intValue();
+    }
+
     public Double getFeelsLike() {
         return feelsLike;
+    }
+
+    public Integer getIntFeelsLike() {
+        return getFeelsLike().intValue();
     }
 
 }

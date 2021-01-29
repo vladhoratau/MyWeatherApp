@@ -9,21 +9,23 @@
     tools:ignore="ExtraText">
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+        android:id="@+id/mainActivityViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/mainActivityTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/locationsTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/currentLocationTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -35,8 +37,10 @@
         android:id="@+id/searchFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="#fff"
         app:srcCompat="@drawable/ic_search_white_24dp"
         tools:ignore="VectorDrawableCompat" />
 

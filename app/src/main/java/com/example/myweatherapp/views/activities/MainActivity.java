@@ -1,7 +1,7 @@
 package com.example.myweatherapp.views.activities;
+
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
-import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.views.fragments.CurrentLocationFragment;
 import com.example.myweatherapp.views.fragments.LocationsFragment;
 
@@ -11,24 +11,25 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 
-public class MainActivity extends BaseActivity {
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+public class MainActivity extends AppCompatActivity {
+    private ViewPager mainActivityViewPager;
+    private TabLayout mainActivityTabLayout;
     private ViewPagerAdapter viewPagerAdapter;
     private FloatingActionButton searchFAB;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        viewPager = findViewById(R.id.viewPager);
-        tabLayout = findViewById(R.id.tabLayout);
+        mainActivityViewPager = findViewById(R.id.mainActivityViewPager);
+        mainActivityTabLayout = findViewById(R.id.mainActivityTab);
         searchFAB = findViewById(R.id.searchFAB);
         CurrentLocationFragment currentLocationFragment = new CurrentLocationFragment();
         LocationsFragment locationsFragment = new LocationsFragment();
@@ -36,9 +37,9 @@ public class MainActivity extends BaseActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
         viewPagerAdapter.addFragment(locationsFragment, "Locations");
         viewPagerAdapter.addFragment(currentLocationFragment, "Current Location");
-        viewPager.setAdapter(viewPagerAdapter);
+        mainActivityViewPager.setAdapter(viewPagerAdapter);
 
-        tabLayout.setupWithViewPager(viewPager);
+        mainActivityTabLayout.setupWithViewPager(mainActivityViewPager);
 
         searchFAB.setOnClickListener(new View.OnClickListener() {
             @Override
