@@ -14,6 +14,13 @@ public class DateUtil {
         return date.getHours();
     }
 
+    public static String getDayFromUnix(Long inputDate) {
+        Date date = new java.util.Date(inputDate * 1000L);
+        SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("dd-MMM");
+        simpleDateFormat.setTimeZone(java.util.TimeZone.getTimeZone("GMT-4"));
+        return simpleDateFormat.format(date);
+    }
+
     public static String getTomorrowDate() {
         SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("dd-MMM-yyyy");
         Date date = new Date();

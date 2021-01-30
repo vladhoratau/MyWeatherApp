@@ -1,7 +1,6 @@
 package com.example.myweatherapp.views.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.WeatherAdapter;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
-import com.example.myweatherapp.models.hourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.utils.DateUtil;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.Date;
 import java.util.List;
 
 public class TomorrowWeatherDetailsFragment extends Fragment {

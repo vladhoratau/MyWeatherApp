@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myweatherapp.R;
+import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.hourlyWeather.HourlyWeatherData;
-import com.example.myweatherapp.models.hourlyWeather.HourlyWeatherResponse;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherResponse;
 import com.example.myweatherapp.services.CurrentWeatherDataService;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
@@ -28,6 +30,7 @@ public class CurrentWeatherRepository {
     private MutableLiveData<CurrentWeatherResponse> currentWeatherLiveData;
     private MutableLiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
     private MutableLiveData<List<HourlyWeatherData>> tomorrowWeatherLiveData;
+    private MutableLiveData<List<DailyWeatherData>> dailyWeatherLiveData;
     private MutableLiveData<Coordinates> coordinatesLiveData;
 
     public CurrentWeatherRepository() {
@@ -35,7 +38,7 @@ public class CurrentWeatherRepository {
         hourlyWeatherDataLiveData = new MutableLiveData<>();
         coordinatesLiveData = new MutableLiveData<>();
         tomorrowWeatherLiveData = new MutableLiveData<>();
-
+        dailyWeatherLiveData = new MutableLiveData<>();
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit
@@ -69,41 +72,65 @@ public class CurrentWeatherRepository {
 
     public void getHourlyWeather(String unit) {
         currentWeatherDataService
-            .getHourlyWeather(coordinatesLiveData.getValue().getLat(),
-                    coordinatesLiveData.getValue().getLon(),
-                    unit,
-                    "current,minutely,daily,alerts",
-                    ApplicationClass.getInstance().getString(R.string.api_key))
-            .enqueue(new Callback<HourlyWeatherResponse>() {
-                @Override
-                public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
-                    if(response.isSuccessful()) {
-                        List<HourlyWeatherData> todayWeather = new ArrayList<>();
-                        List<HourlyWeatherData> receivedData = response.body().getHourlyWeatherDataList();
-                        int i;
-                        for (i = 0; i < receivedData.size(); i++) {
-                            if (i != 0 && DateUtil.getHourFromUnix(receivedData.get(i).getDt()) == 0) {
-                                break;
+                .getHourlyWeather(coordinatesLiveData.getValue().getLat(),
+                        coordinatesLiveData.getValue().getLon(),
+                        unit,
+                        "current,minutely,daily,alerts",
+                        ApplicationClass.getInstance().getString(R.string.api_key))
+                .enqueue(new Callback<HourlyWeatherResponse>() {
+                    @Override
+                    public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
+                        if (response.isSuccessful()) {
+                            List<HourlyWeatherData> todayWeather = new ArrayList<>();
+                            List<HourlyWeatherData> receivedData = response.body().getHourlyWeatherDataList();
+                            int i;
+                            for (i = 0; i < receivedData.size(); i++) {
+                                if (i != 0 && DateUtil.getHourFromUnix(receivedData.get(i).getDt()) == 0) {
+                                    break;
+                                }
+                                todayWeather.add(receivedData.get(i));
                             }
-                            todayWeather.add(receivedData.get(i));
+
+                            List<HourlyWeatherData> tomorrowWeather = new ArrayList<>(receivedData.subList(i, i + 24));
+
+                            hourlyWeatherDataLiveData.postValue(todayWeather);
+                            tomorrowWeatherLiveData.postValue(tomorrowWeather);
+                        } else {
+                            hourlyWeatherDataLiveData.postValue(new ArrayList<HourlyWeatherData>());
                         }
-
-                        List<HourlyWeatherData> tomorrowWeather = new ArrayList<>(receivedData.subList(i, i + 24));
-
-                        hourlyWeatherDataLiveData.postValue(todayWeather);
-                        tomorrowWeatherLiveData.postValue(tomorrowWeather);
                     }
-                    else {
+
+                    @Override
+                    public void onFailure(Call<HourlyWeatherResponse> call, Throwable t) {
                         hourlyWeatherDataLiveData.postValue(new ArrayList<HourlyWeatherData>());
+                        t.printStackTrace();
                     }
-                }
+                });
+    }
 
-                @Override
-                public void onFailure(Call<HourlyWeatherResponse> call, Throwable t) {
-                    hourlyWeatherDataLiveData.postValue(new ArrayList<HourlyWeatherData>());
-                    t.printStackTrace();
+    public void getDailyWeather(String unit) {
+        currentWeatherDataService.getDailyWeather(coordinatesLiveData.getValue().getLat()
+                , coordinatesLiveData.getValue().getLon()
+                , unit, "current,minutely,hourly,alerts"
+                , ApplicationClass.getInstance().getString(R.string.api_key)).enqueue(new Callback<DailyWeatherResponse>() {
+            @Override
+            public void onResponse(Call<DailyWeatherResponse> call, Response<DailyWeatherResponse> response) {
+                if(response.isSuccessful()) {
+                    List<DailyWeatherData> recievedWeatherData = response.body().getDailyWeatherData();
+                    List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(0, 5));
+                    dailyWeatherLiveData.postValue(dailyWeatherData);
                 }
-            });
+                else {
+                    dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DailyWeatherResponse> call, Throwable t) {
+                dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
+                t.printStackTrace();
+            }
+        });
     }
 
     public LiveData<CurrentWeatherResponse> getCurrentWeatherLiveData() {
@@ -120,5 +147,9 @@ public class CurrentWeatherRepository {
 
     public MutableLiveData<List<HourlyWeatherData>> getTomorrowWeatherLiveData() {
         return tomorrowWeatherLiveData;
+    }
+
+    public MutableLiveData<List<DailyWeatherData>> getDailyWeatherLiveData() {
+        return dailyWeatherLiveData;
     }
 }

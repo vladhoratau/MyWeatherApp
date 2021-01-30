@@ -1,7 +1,8 @@
 package com.example.myweatherapp.services;
 
+import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.hourlyWeather.HourlyWeatherResponse;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,4 +14,10 @@ public interface CurrentWeatherDataService {
 
     @GET("onecall")
     Call<HourlyWeatherResponse> getHourlyWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("units") String unit, @Query("exclude") String exclude, @Query("appid") String appId);
+
+    @GET("onecall")
+    Call<DailyWeatherResponse> getDailyWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("units") String unit, @Query("exclude") String exclude, @Query("appid") String appId);
+
+    @GET("onecall/timemachine")
+    Call<HistoricalWeatherResponse> getHistoricalWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("dt") Long dt, @Query("units") String unit, @Query("appid") String appId);
 }

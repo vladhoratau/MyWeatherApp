@@ -1,4 +1,4 @@
-package com.example.myweatherapp.models.hourlyWeather;
+package com.example.myweatherapp.models.OneCallWeather.HourlyWeather;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

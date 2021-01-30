@@ -19,7 +19,7 @@ import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.WeatherAdapter;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.hourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.ToastMessage;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
