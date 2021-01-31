@@ -19,5 +19,5 @@ public interface CurrentWeatherDataService {
     Call<DailyWeatherResponse> getDailyWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("units") String unit, @Query("exclude") String exclude, @Query("appid") String appId);
 
     @GET("onecall/timemachine")
-    Call<HistoricalWeatherResponse> getHistoricalWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("dt") Long dt, @Query("units") String unit, @Query("appid") String appId);
+    Call<HourlyWeatherResponse> getHistoricalWeather(@Query("lat") Double lat, @Query("lon") Double lon, @Query("dt") Long dt, @Query("units") String unit, @Query("appid") String appId);
 }

@@ -20,9 +20,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import static com.example.myweatherapp.utils.LocationUtils.getLocation;
 
 public class SearchActivity extends AppCompatActivity {
     private TextInputEditText searchLocation;
@@ -30,7 +28,6 @@ public class SearchActivity extends AppCompatActivity {
     private SwitchMaterial setUnit, addToFavourite;
     private MaterialButton viewWeather;
     private WeatherViewModel weatherViewModel;
-    private GpsTracker gpsTracker;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,26 +71,4 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private String getLocation() {
-        gpsTracker = new GpsTracker(SearchActivity.this);
-        if (gpsTracker.canGetLocation()) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
-
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = null;
-            try {
-                addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String address = addresses.get(0).getAddressLine(0);
-            String cityNamePostalCode = address.split(",")[1];
-            cityNamePostalCode = cityNamePostalCode.replaceAll("[0-9]", "");
-            return cityNamePostalCode.trim();
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-        return "";
-    }
 }

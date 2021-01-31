@@ -15,17 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.DailyWeatherAdapter;
+import com.example.myweatherapp.adapters.HistoricalWeatherAdapter;
+import com.example.myweatherapp.adapters.WeatherAdapter;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 import com.google.android.material.textview.MaterialTextView;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;
 
 public class FiveDaysWeatherDetailsFragment extends Fragment {
     private WeatherViewModel weatherViewModel;
     private DailyWeatherAdapter dailyWeatherAdapter;
+    private HistoricalWeatherAdapter historicalWeatherDataAdapter;
     private RecyclerView fiveDaysDailyWeather;
+    //private RecyclerView historicalWeather;
     private MaterialTextView cityName;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,12 +49,20 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fiveDaysDailyWeather = view.findViewById(R.id.fiveDaysDailyyWeather);
+        //historicalWeather = view.findViewById(R.id.historicalWeather);
         cityName = view.findViewById(R.id.fiveDaysCityName);
 
-        cityName.setText(getSearchedLocation());
+        cityName.setText(WordUtils.capitalize(getSearchedLocation(),',', '-'));
+
         dailyWeatherAdapter = new DailyWeatherAdapter();
         fiveDaysDailyWeather.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        historicalWeatherDataAdapter = new HistoricalWeatherAdapter();
         fiveDaysDailyWeather.setAdapter(dailyWeatherAdapter);
+        //fiveDaysDailyWeather.setAdapter(historicalWeatherDataAdapter);
+//        historicalWeather.setLayoutManager(new LinearLayoutManager(getContext()));
+//        historicalWeather.setAdapter(historicalWeatherDataAdapter);
 
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.init();
@@ -58,6 +73,7 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
             @Override
             public void onChanged(Coordinates coordinates) {
                 weatherViewModel.getDailyWeather(getUnit());
+                weatherViewModel.getHistoricalWeather(getUnit());
             }
         });
 
@@ -69,6 +85,15 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
                 }
             }
         });
+
+//        weatherViewModel.getHistoricalWeatherDataLiveData().observe(getViewLifecycleOwner(), new Observer<List<HourlyWeatherData>>() {
+//            @Override
+//            public void onChanged(List<HourlyWeatherData> historicalWeatherData) {
+//                if(historicalWeatherData != null) {
+//                    historicalWeatherDataAdapter.setResults(historicalWeatherData, getUnitMeasure());
+//                }
+//            }
+//        });
 
     }
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fiveDaysCard"
@@ -24,17 +25,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/dimen_32" />
 
-            <TextView
-                android:id="@+id/fiveDaysDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/historicalWeather"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/fiveDaysCard" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fiveDaysDailyyWeather"
@@ -42,5 +43,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fiveDaysCard" />
 
-</RelativeLayout>
+</LinearLayout>
 

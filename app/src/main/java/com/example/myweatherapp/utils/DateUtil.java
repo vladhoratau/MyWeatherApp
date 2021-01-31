@@ -2,8 +2,10 @@ package com.example.myweatherapp.utils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DateUtil {
 
@@ -30,4 +32,19 @@ public class DateUtil {
         date = c.getTime();
         return simpleDateFormat.format(date);
     }
+
+    public static List<Long> getLastDaysUnix(Integer noOfdays) {
+        Calendar calendar = Calendar.getInstance();
+        List<Date> dateList = new ArrayList<>();
+        List<Long> unixDateList = new ArrayList<>();
+        for (int i = 1; i <= noOfdays; i++) {
+            calendar.add(Calendar.DATE, -1);
+            dateList.add(calendar.getTime());
+        }
+        for (int j = 0; j < dateList.size(); j++) {
+            unixDateList.add(dateList.get(j).getTime() / 1000);
+        }
+        return unixDateList;
+    }
+
 }

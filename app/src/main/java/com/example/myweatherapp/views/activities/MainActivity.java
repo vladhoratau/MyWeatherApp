@@ -2,6 +2,7 @@ package com.example.myweatherapp.views.activities;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
+import com.example.myweatherapp.utils.DateUtil;
 import com.example.myweatherapp.views.fragments.CurrentLocationFragment;
 import com.example.myweatherapp.views.fragments.LocationsFragment;
 
@@ -10,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

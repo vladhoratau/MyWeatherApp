@@ -21,6 +21,9 @@ import com.example.myweatherapp.utils.DateUtil;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 import com.google.android.material.textview.MaterialTextView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.util.List;
 
 public class TomorrowWeatherDetailsFragment extends Fragment {
@@ -47,7 +50,8 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
         cityName = view.findViewById(R.id.tomorrowCityName);
         tomorrowDate = view.findViewById(R.id.tomorrowDate);
 
-        cityName.setText(getSearchedLocation());
+
+        cityName.setText(WordUtils.capitalize(getSearchedLocation(),',', '-'));
         tomorrowDate.setText(DateUtil.getTomorrowDate());
 
         weatherAdapter = new WeatherAdapter();

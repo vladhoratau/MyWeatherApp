@@ -1,5 +1,7 @@
 package com.example.myweatherapp.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -31,6 +33,8 @@ public class CurrentWeatherRepository {
     private MutableLiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
     private MutableLiveData<List<HourlyWeatherData>> tomorrowWeatherLiveData;
     private MutableLiveData<List<DailyWeatherData>> dailyWeatherLiveData;
+    private MutableLiveData<List<HourlyWeatherData>> historicalWeatherLive;
+
     private MutableLiveData<Coordinates> coordinatesLiveData;
 
     public CurrentWeatherRepository() {
@@ -39,6 +43,7 @@ public class CurrentWeatherRepository {
         coordinatesLiveData = new MutableLiveData<>();
         tomorrowWeatherLiveData = new MutableLiveData<>();
         dailyWeatherLiveData = new MutableLiveData<>();
+        historicalWeatherLive = new MutableLiveData<>(new ArrayList<>());
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit
@@ -115,12 +120,11 @@ public class CurrentWeatherRepository {
                 , ApplicationClass.getInstance().getString(R.string.api_key)).enqueue(new Callback<DailyWeatherResponse>() {
             @Override
             public void onResponse(Call<DailyWeatherResponse> call, Response<DailyWeatherResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     List<DailyWeatherData> recievedWeatherData = response.body().getDailyWeatherData();
                     List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(0, 5));
                     dailyWeatherLiveData.postValue(dailyWeatherData);
-                }
-                else {
+                } else {
                     dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
                 }
             }
@@ -133,12 +137,47 @@ public class CurrentWeatherRepository {
         });
     }
 
+    public void getHistoricalDataForLast5Days(String unit) {
+        List<Long> dts = DateUtil.getLastDaysUnix(5);
+        for(int i = 0; i < dts.size(); i++) {
+            getHistoricalWeatherForDay(unit, dts.get(i));
+        }
+    }
+
+    private void getHistoricalWeatherForDay(String unit, Long dt) {
+        currentWeatherDataService.getHistoricalWeather(coordinatesLiveData.getValue().getLat(),
+                coordinatesLiveData.getValue().getLon(),
+                dt,
+                unit,
+                ApplicationClass.getInstance().getString(R.string.api_key))
+                .enqueue(new Callback<HourlyWeatherResponse>() {
+            @Override
+            public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
+                if(response.isSuccessful()) {
+                    List<HourlyWeatherData> receivedWeather = response.body().getHourlyWeatherDataList();
+                    List<HourlyWeatherData> newHistoricalWeather = historicalWeatherLive.getValue();
+                    newHistoricalWeather.add(receivedWeather.get(0));
+                    historicalWeatherLive.postValue(newHistoricalWeather);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HourlyWeatherResponse> call, Throwable t) {
+                    t.printStackTrace();
+            }
+        });
+    }
+
     public LiveData<CurrentWeatherResponse> getCurrentWeatherLiveData() {
         return currentWeatherLiveData;
     }
 
     public MutableLiveData<List<HourlyWeatherData>> getHourlyWeatherDataLiveData() {
         return hourlyWeatherDataLiveData;
+    }
+
+    public MutableLiveData<List<HourlyWeatherData>> getHistoricalWeatherLive() {
+        return historicalWeatherLive;
     }
 
     public MutableLiveData<Coordinates> getCoordinatesLiveData() {
@@ -152,4 +191,6 @@ public class CurrentWeatherRepository {
     public MutableLiveData<List<DailyWeatherData>> getDailyWeatherLiveData() {
         return dailyWeatherLiveData;
     }
+
+
 }
