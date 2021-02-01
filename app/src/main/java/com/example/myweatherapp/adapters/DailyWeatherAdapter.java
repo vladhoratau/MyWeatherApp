@@ -13,6 +13,7 @@ import com.example.myweatherapp.R;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
+import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,10 +68,10 @@ import java.util.List;
     }
 
     class WeatherResultHolder extends RecyclerView.ViewHolder {
-        private TextView dayTemperatureTextView;
-        private TextView nightTemperatureTextView;
-        private TextView dayTextView;
-        private TextView descriptionTextView;
+        private MaterialTextView dayTemperatureTextView;
+        private MaterialTextView nightTemperatureTextView;
+        private MaterialTextView dayTextView;
+        private MaterialTextView descriptionTextView;
         private ImageView weatherIconImageView;
 
         public WeatherResultHolder(@NonNull View itemView) {

@@ -1,16 +1,12 @@
 package com.example.myweatherapp.repositories;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherDataInfo;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherTempInfo;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.WeatherDataInfo;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
 import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
@@ -36,7 +32,6 @@ public class CurrentWeatherRepository {
     private MutableLiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
     private MutableLiveData<List<HourlyWeatherData>> tomorrowWeatherLiveData;
     private MutableLiveData<List<DailyWeatherData>> dailyWeatherLiveData;
-
     private MutableLiveData<Coordinates> coordinatesLiveData;
 
     public CurrentWeatherRepository() {
@@ -169,7 +164,6 @@ public class CurrentWeatherRepository {
                     newDailyWeather.add(newDailyWeatherData);
                     dailyWeatherLiveData.postValue(newDailyWeather);
                 }
-
             }
 
             @Override

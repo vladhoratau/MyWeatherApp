@@ -16,19 +16,19 @@
             android:layout_marginLeft="@dimen/dimen_8"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/timeItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/dimen_32" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/descriptionItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/temperatureItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

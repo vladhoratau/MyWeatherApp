@@ -1,8 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card"
+    android:id="@+id/savedLocationsCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
+
+
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -13,25 +16,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_8"
-            android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/dayItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/dimen_32" />
+            <ImageView
+                android:id="@+id/savedLocationIconItem"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="@dimen/dimen_8"
+                android:scaleType="centerCrop" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/descriptionItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/dimen_48">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -39,17 +39,11 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/dayTemperatureText"
+                    android:id="@+id/savedLocationTemperatureAndDescriptionItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Day: "
                     android:textSize="@dimen/dimen_16" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/dayTemperatureItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/dimen_24" />
 
             </LinearLayout>
 
@@ -60,28 +54,19 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/nightTemperatureText"
+                    android:id="@+id/savedLocationCityNameItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_location_gray_24dp"
                     android:text="Night: "
                     android:textSize="@dimen/dimen_16" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/nightTemperatureItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/dimen_24" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/weatherIconItem"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="@dimen/dimen_8"
-            android:scaleType="centerCrop" />
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

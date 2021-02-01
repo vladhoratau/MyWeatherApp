@@ -1,6 +1,7 @@
 package com.example.myweatherapp.viewmodels;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
@@ -8,7 +9,6 @@ import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
 import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.repositories.CurrentWeatherRepository;
-
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class WeatherViewModel extends ViewModel {
     private LiveData<List<HourlyWeatherData>> tomorrowWeatherDataLiveData;
     private LiveData<List<DailyWeatherData>> dailyWeatherDataLiveData;
     private LiveData<Coordinates> coordinatesLiveData;
-
+    private MutableLiveData<CurrentWeatherResponse> locationToSaveLiveData = new MutableLiveData<>();
 
     public void init() {
         currentWeatherRepository = new CurrentWeatherRepository();
@@ -28,7 +28,6 @@ public class WeatherViewModel extends ViewModel {
         coordinatesLiveData = currentWeatherRepository.getCoordinatesLiveData();
         tomorrowWeatherDataLiveData = currentWeatherRepository.getTomorrowWeatherLiveData();
         dailyWeatherDataLiveData = currentWeatherRepository.getDailyWeatherLiveData();
-
     }
 
     public void getCurrentWeather(String cityName, String unit) {
@@ -50,7 +49,6 @@ public class WeatherViewModel extends ViewModel {
     public LiveData<CurrentWeatherResponse> getCurrentWeatherLiveData() {
         return currentWeatherLiveData;
     }
-
 
     public LiveData<List<HourlyWeatherData>> getHourlyWeatherLiveData() {
         return hourlyWeatherDataLiveData;

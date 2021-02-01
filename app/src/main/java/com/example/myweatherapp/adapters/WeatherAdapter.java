@@ -13,6 +13,7 @@ import com.example.myweatherapp.R;
 import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
+import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -64,9 +65,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherR
     }
 
     class WeatherResultHolder extends RecyclerView.ViewHolder {
-        private TextView temperatureTextView;
-        private TextView hourTextView;
-        private TextView descriptionTextView;
+        private MaterialTextView temperatureTextView;
+        private MaterialTextView hourTextView;
+        private MaterialTextView descriptionTextView;
         private ImageView weatherIconImageView;
 
         public WeatherResultHolder(@NonNull View itemView) {
