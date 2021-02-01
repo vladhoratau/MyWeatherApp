@@ -31,17 +31,12 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/historicalWeather"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/fiveDaysCard" />-->
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fiveDaysDailyyWeather"
+        android:id="@+id/fiveDaysDailyWeather"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fiveDaysCard" />
+
 
 </LinearLayout>
 

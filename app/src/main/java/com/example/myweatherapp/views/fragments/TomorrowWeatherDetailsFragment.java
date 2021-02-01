@@ -21,7 +21,6 @@ import com.example.myweatherapp.utils.DateUtil;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 import com.google.android.material.textview.MaterialTextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;

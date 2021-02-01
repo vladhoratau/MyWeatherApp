@@ -16,6 +16,7 @@ import com.example.myweatherapp.utils.DateUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
     public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapter.WeatherResultHolder> {
@@ -52,6 +53,7 @@ import java.util.List;
 
     public void setResults(List<DailyWeatherData> dailyWeatherDataList, String unitMeasure) {
         this.dailyWeatherDataList = dailyWeatherDataList;
+        dailyWeatherDataList.sort(Comparator.comparing(DailyWeatherData::getDt));
         this.unitMeasure = unitMeasure;
         notifyDataSetChanged();
     }

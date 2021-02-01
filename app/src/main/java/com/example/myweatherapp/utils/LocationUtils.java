@@ -1,5 +1,6 @@
 package com.example.myweatherapp.utils;
 
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
@@ -12,13 +13,13 @@ import java.util.Locale;
 
 public class LocationUtils {
 
-    public static String getLocation() {
-        GpsTracker gpsTracker = new GpsTracker(ApplicationClass.getInstance().getBaseContext());
+    public static String getLocation(Context context) {
+        GpsTracker gpsTracker = new GpsTracker(context);
         if (gpsTracker.canGetLocation()) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
 
-            Geocoder geocoder = new Geocoder(ApplicationClass.getInstance().getBaseContext(), Locale.getDefault());
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = null;
             try {
                 addresses = geocoder.getFromLocation(latitude, longitude, 1);

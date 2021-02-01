@@ -3,7 +3,7 @@ package com.example.myweatherapp.models.OneCallWeather.HourlyWeather;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HourlyWeatherDataInfo {
+public class WeatherDataInfo {
     @SerializedName("description")
     @Expose
     String description;
@@ -12,7 +12,7 @@ public class HourlyWeatherDataInfo {
     @Expose
     String icon;
 
-    public HourlyWeatherDataInfo(String description, String icon) {
+    public WeatherDataInfo(String description, String icon) {
         this.description = description;
         this.icon = icon;
     }

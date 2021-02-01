@@ -2,7 +2,6 @@ package com.example.myweatherapp.views.activities;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
-import com.example.myweatherapp.utils.DateUtil;
 import com.example.myweatherapp.views.fragments.CurrentLocationFragment;
 import com.example.myweatherapp.views.fragments.LocationsFragment;
 
@@ -11,7 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mainActivityViewPager = findViewById(R.id.mainActivityViewPager);
         mainActivityTabLayout = findViewById(R.id.mainActivityTab);
@@ -39,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
         viewPagerAdapter.addFragment(locationsFragment, "Locations");
         viewPagerAdapter.addFragment(currentLocationFragment, "Current Location");
+
         mainActivityViewPager.setAdapter(viewPagerAdapter);
 
         mainActivityTabLayout.setupWithViewPager(mainActivityViewPager);

@@ -17,12 +17,12 @@ public class HourlyWeatherData {
 
     @SerializedName("weather")
     @Expose
-    List<HourlyWeatherDataInfo> hourlyWeatherDataInfoList;
+    List<WeatherDataInfo> weatherDataInfoList;
 
-    public HourlyWeatherData(Long dt, Double temp, List<HourlyWeatherDataInfo> hourlyWeatherDataInfoList) {
+    public HourlyWeatherData(Long dt, Double temp, List<WeatherDataInfo> weatherDataInfoList) {
         this.dt = dt;
         this.temp = temp;
-        this.hourlyWeatherDataInfoList = hourlyWeatherDataInfoList;
+        this.weatherDataInfoList = weatherDataInfoList;
     }
 
     public Long getDt() {
@@ -33,7 +33,7 @@ public class HourlyWeatherData {
         return temp;
     }
 
-    public List<HourlyWeatherDataInfo> getHourlyWeatherDataInfoList() {
-        return hourlyWeatherDataInfoList;
+    public List<WeatherDataInfo> getWeatherDataInfoList() {
+        return weatherDataInfoList;
     }
 }

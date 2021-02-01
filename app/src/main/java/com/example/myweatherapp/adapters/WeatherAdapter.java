@@ -36,9 +36,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherR
         HourlyWeatherData hourlyWeatherData = hourlyWeatherDataList.get(position);
 
         holder.temperatureTextView.setText(hourlyWeatherData.getTemp().intValue() + unitMeasure);
-        holder.descriptionTextView.setText(String.valueOf(hourlyWeatherData.getHourlyWeatherDataInfoList().get(0).getDescription()));
+        holder.descriptionTextView.setText(String.valueOf(hourlyWeatherData.getWeatherDataInfoList().get(0).getDescription()));
         String weatherIconUrl = ApplicationClass.getInstance().getString(R.string.iconRoot)
-                + hourlyWeatherData.getHourlyWeatherDataInfoList().get(0).getIcon() + ".png";
+                + hourlyWeatherData.getWeatherDataInfoList().get(0).getIcon() + ".png";
         Picasso.with(ApplicationClass.getInstance().getApplicationContext()).load(weatherIconUrl).into(holder.weatherIconImageView);
         holder.hourTextView.setText(getFormattedHour(DateUtil.getHourFromUnix(hourlyWeatherData.getDt())));
     }

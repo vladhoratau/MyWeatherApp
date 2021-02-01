@@ -1,5 +1,6 @@
 package com.example.myweatherapp.models.OneCallWeather.DailyWeather;
 
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.WeatherDataInfo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,9 +18,9 @@ public class DailyWeatherData {
 
     @SerializedName("weather")
     @Expose
-    private List<DailyWeatherDataInfo> dailyWeatherDataInfo;
+    private List<WeatherDataInfo> dailyWeatherDataInfo;
 
-    public DailyWeatherData(Long dt, DailyWeatherTempInfo dailyWeatherTempInfo, List<DailyWeatherDataInfo> dailyWeatherDataInfoList) {
+    public DailyWeatherData(Long dt, DailyWeatherTempInfo dailyWeatherTempInfo, List<WeatherDataInfo> dailyWeatherDataInfoList) {
         this.dt = dt;
         this.dailyWeatherTempInfo = dailyWeatherTempInfo;
         this.dailyWeatherDataInfo = dailyWeatherDataInfoList;
@@ -33,7 +34,7 @@ public class DailyWeatherData {
         return dailyWeatherTempInfo;
     }
 
-    public List<DailyWeatherDataInfo> getDailyWeatherDataInfoList() {
+    public List<WeatherDataInfo> getDailyWeatherDataInfoList() {
         return dailyWeatherDataInfo;
     }
 }

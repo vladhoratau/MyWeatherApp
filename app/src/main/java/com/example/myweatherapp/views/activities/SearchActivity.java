@@ -14,13 +14,19 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.services.GpsTracker;
 import com.example.myweatherapp.utils.ApplicationClass;
+import com.example.myweatherapp.utils.DateUtil;
+import com.example.myweatherapp.utils.LocationUtils;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import static com.example.myweatherapp.utils.LocationUtils.getLocation;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+
 
 public class SearchActivity extends AppCompatActivity {
     private TextInputEditText searchLocation;
@@ -55,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                searchLocation.setText(getLocation());
+                searchLocation.setText(LocationUtils.getLocation(SearchActivity.this));
             }
         });
 
@@ -70,5 +76,28 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+//    public String getLocation() {
+//        GpsTracker gpsTracker = new GpsTracker(SearchActivity.this);
+//        if (gpsTracker.canGetLocation()) {
+//            double latitude = gpsTracker.getLatitude();
+//            double longitude = gpsTracker.getLongitude();
+//
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addresses = null;
+//            try {
+//                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            String address = addresses.get(0).getAddressLine(0);
+//            String cityNamePostalCode = address.split(",")[1];
+//            cityNamePostalCode = cityNamePostalCode.replaceAll("[0-9]", "");
+//            return cityNamePostalCode.trim();
+//        } else {
+//            gpsTracker.showSettingsAlert();
+//        }
+//        return "";
+//    }
 
 }

@@ -1,6 +1,5 @@
 package com.example.myweatherapp.views.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,7 +23,6 @@ import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeathe
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.ToastMessage;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
-import com.example.myweatherapp.views.activities.SearchActivity;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
@@ -77,15 +76,20 @@ public class TodayWeatherDetailsFragment extends Fragment {
                         String weatherIconUrl = ApplicationClass.getInstance().getString(R.string.iconRoot)
                                 + currentWeatherResponse.getWeather().get(0).getIcon() + ".png";
                         Picasso.with(getContext()).load(weatherIconUrl).into(weatherIcon);
+                        getActivity().setTitle(currentWeatherResponse.getCityName()
+                                + "," + " " + currentWeatherResponse.getCountry().getCountryName()
+                        + ": " + currentWeatherResponse.getMainWeatherParams().getIntTemp() + getUnitMeasure()
+                        + ", " +  currentWeatherResponse.getWeather().get(0).getDescription());
+
                     } else {
                         ToastMessage.showMessage("Invalid location");
-                        final Intent intent = new Intent(getActivity(), SearchActivity.class);
-                        startActivity(intent);
+//                        final Intent intent = new Intent(getActivity(), SearchActivity.class);
+//                        startActivity(intent);
                     }
                 } else {
                     ToastMessage.showMessage("No network connection");
-                    final Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    startActivity(intent);
+//                    final Intent intent = new Intent(getActivity(), SearchActivity.class);
+//                    startActivity(intent);
                 }
             }
         });

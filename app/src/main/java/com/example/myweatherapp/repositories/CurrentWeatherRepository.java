@@ -7,7 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherDataInfo;
 import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
+import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherTempInfo;
+import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.WeatherDataInfo;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
 import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
@@ -33,7 +36,6 @@ public class CurrentWeatherRepository {
     private MutableLiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
     private MutableLiveData<List<HourlyWeatherData>> tomorrowWeatherLiveData;
     private MutableLiveData<List<DailyWeatherData>> dailyWeatherLiveData;
-    private MutableLiveData<List<HourlyWeatherData>> historicalWeatherLive;
 
     private MutableLiveData<Coordinates> coordinatesLiveData;
 
@@ -43,7 +45,6 @@ public class CurrentWeatherRepository {
         coordinatesLiveData = new MutableLiveData<>();
         tomorrowWeatherLiveData = new MutableLiveData<>();
         dailyWeatherLiveData = new MutableLiveData<>();
-        historicalWeatherLive = new MutableLiveData<>(new ArrayList<>());
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit
@@ -122,7 +123,7 @@ public class CurrentWeatherRepository {
             public void onResponse(Call<DailyWeatherResponse> call, Response<DailyWeatherResponse> response) {
                 if (response.isSuccessful()) {
                     List<DailyWeatherData> recievedWeatherData = response.body().getDailyWeatherData();
-                    List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(0, 5));
+                    List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(1, 6));
                     dailyWeatherLiveData.postValue(dailyWeatherData);
                 } else {
                     dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
@@ -155,10 +156,20 @@ public class CurrentWeatherRepository {
             public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
                 if(response.isSuccessful()) {
                     List<HourlyWeatherData> receivedWeather = response.body().getHourlyWeatherDataList();
-                    List<HourlyWeatherData> newHistoricalWeather = historicalWeatherLive.getValue();
-                    newHistoricalWeather.add(receivedWeather.get(0));
-                    historicalWeatherLive.postValue(newHistoricalWeather);
+                    DailyWeatherTempInfo dailyWeatherTempInfo = new DailyWeatherTempInfo(
+                            receivedWeather.get(0).getTemp(),
+                            receivedWeather.get(0).getTemp() - 2
+                    );
+                    DailyWeatherData newDailyWeatherData = new DailyWeatherData(
+                            receivedWeather.get(0).getDt(),
+                            dailyWeatherTempInfo,
+                            receivedWeather.get(0).getWeatherDataInfoList()
+                    );
+                    List<DailyWeatherData> newDailyWeather = dailyWeatherLiveData.getValue();
+                    newDailyWeather.add(newDailyWeatherData);
+                    dailyWeatherLiveData.postValue(newDailyWeather);
                 }
+
             }
 
             @Override
@@ -174,10 +185,6 @@ public class CurrentWeatherRepository {
 
     public MutableLiveData<List<HourlyWeatherData>> getHourlyWeatherDataLiveData() {
         return hourlyWeatherDataLiveData;
-    }
-
-    public MutableLiveData<List<HourlyWeatherData>> getHistoricalWeatherLive() {
-        return historicalWeatherLive;
     }
 
     public MutableLiveData<Coordinates> getCoordinatesLiveData() {
