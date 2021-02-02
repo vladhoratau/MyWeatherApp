@@ -6,21 +6,20 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
 import com.example.myweatherapp.services.GpsTracker;
-import com.example.myweatherapp.utils.ApplicationClass;
-import com.example.myweatherapp.utils.LocationUtils;
 import com.example.myweatherapp.views.activities.SearchActivity;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,6 +34,13 @@ public class CurrentLocationFragment extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
     private ViewPager locationDetailsViewPager;
     private TabLayout locationDetailsTabLayout;
+    private GpsTracker gpsTracker;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_current_location, container, false);
@@ -47,19 +53,8 @@ public class CurrentLocationFragment extends Fragment {
         locationDetailsTabLayout = view.findViewById(R.id.locationDetailsTabLayout);
         locationDetailsViewPager = view.findViewById(R.id.locationDetailsViewPager);
 
-//        try {
-//            if (ActivityCompat.checkSelfPermission(ApplicationClass.getInstance(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                    && ActivityCompat.checkSelfPermission(ApplicationClass.getInstance(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-//            }
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         Bundle bundle = new Bundle();
-        bundle.putString("searchedLocation", LocationUtils.getLocation(getContext()));
+        bundle.putString("searchedLocation", getLocation());
         bundle.putString("unit", "metric");
         todayWeatherDetailsFragment = new TodayWeatherDetailsFragment();
         todayWeatherDetailsFragment.setArguments(bundle);
@@ -74,7 +69,33 @@ public class CurrentLocationFragment extends Fragment {
         viewPagerAdapter.addFragment(fiveDaysWeatherDetailsFragment, "5 days");
         locationDetailsViewPager.setAdapter(viewPagerAdapter);
         locationDetailsTabLayout.setupWithViewPager(locationDetailsViewPager);
+    }
 
+    private String getLocation() {
+        gpsTracker = new GpsTracker(getActivity());
+        if (gpsTracker.canGetLocation()) {
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
 
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String address = addresses.get(0).getAddressLine(0);
+            String cityNamePostalCode = address.split(",")[1];
+            cityNamePostalCode = cityNamePostalCode.replaceAll("[0-9]", "");
+            return cityNamePostalCode.trim();
+        } else {
+            gpsTracker.showSettingsAlert();
+        }
+        return "";
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        menu.clear();
     }
 }

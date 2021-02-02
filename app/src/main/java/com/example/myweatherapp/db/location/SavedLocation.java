@@ -1,5 +1,7 @@
 package com.example.myweatherapp.db.location;
 
+import android.widget.ImageView;
+
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;

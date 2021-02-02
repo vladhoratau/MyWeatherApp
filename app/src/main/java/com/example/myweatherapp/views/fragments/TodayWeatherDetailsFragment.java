@@ -1,7 +1,9 @@
 package com.example.myweatherapp.views.fragments;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,15 +30,17 @@ import com.example.myweatherapp.utils.ToastMessage;
 import com.example.myweatherapp.utils.UnitsUtil;
 import com.example.myweatherapp.viewmodels.SavedLocationViewModel;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
+import com.example.myweatherapp.views.activities.SearchActivity;
 import com.google.android.material.textview.MaterialTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TodayWeatherDetailsFragment extends Fragment {
     private WeatherViewModel weatherViewModel;
     private SavedLocationViewModel savedLocationViewModel;
-    private MaterialTextView cityName, temperature, feelsLike, description;
+    private MaterialTextView cityName, temperature, feelsLike, description, imgUrl;
     private ImageView weatherIcon;
     private WeatherAdapter weatherAdapter;
     private RecyclerView todayHourlyWeather;
@@ -62,6 +66,7 @@ public class TodayWeatherDetailsFragment extends Fragment {
         description = view.findViewById(R.id.description);
         weatherIcon = view.findViewById(R.id.weatherIcon);
         todayHourlyWeather = view.findViewById(R.id.todayHourlyWeather);
+        imgUrl = view.findViewById(R.id.imageViewText);
 
         weatherAdapter = new WeatherAdapter();
         todayHourlyWeather.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -84,22 +89,19 @@ public class TodayWeatherDetailsFragment extends Fragment {
                         description.setText(String.valueOf(currentWeatherResponse.getWeather().get(0).getDescription()));
                         feelsLike.setText("Feels like: " + (currentWeatherResponse.getMainWeatherParams().getIntFeelsLike()) + unitMeasure);
 
-                        String weatherIconUrl = ApplicationClass.getInstance().getString(R.string.iconRoot)
+                         String weatherIconUrl = ApplicationClass.getInstance().getString(R.string.iconRoot)
                                 + currentWeatherResponse.getWeather().get(0).getIcon() + ".png";
                         Picasso.with(getContext()).load(weatherIconUrl).into(weatherIcon);
+                        imgUrl.setText(currentWeatherResponse.getWeather().get(0).getIcon());
                         getActivity().setTitle(currentWeatherResponse.getCityName()
                                 + "," + " " + currentWeatherResponse.getCountry().getCountryName()
                         + ": " + currentWeatherResponse.getMainWeatherParams().getIntTemp() + unitMeasure
                         + ", " +  currentWeatherResponse.getWeather().get(0).getDescription());
                     } else {
                         ToastMessage.showMessage("Invalid location");
-//                        final Intent intent = new Intent(getActivity(), SearchActivity.class);
-//                        startActivity(intent);
                     }
                 } else {
                     ToastMessage.showMessage("No network connection");
-//                    final Intent intent = new Intent(getActivity(), SearchActivity.class);
-//                    startActivity(intent);
                 }
             }
         });
@@ -134,8 +136,8 @@ public class TodayWeatherDetailsFragment extends Fragment {
                         cityName.getText().toString(),
                         description.getText().toString(),
                         Double.valueOf(temperature.getText().toString().substring(0, temperature.getText().toString().length() - 2)),
-                        UnitsUtil.getUnitMeasure(UnitsUtil.getUnit(getArguments().getString("unit"))),
-                        "13n"
+                        UnitsUtil.getUnit(Objects.requireNonNull(getArguments().getString("unit"))),
+                        String.valueOf(imgUrl.getText())
                 ));
                 return true;
         }
