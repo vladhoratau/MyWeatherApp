@@ -2,6 +2,9 @@ package com.example.myweatherapp.views.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.DailyWeatherAdapter;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherData;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
+import com.example.myweatherapp.utils.ToastMessage;
+import com.example.myweatherapp.utils.UnitsUtil;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
+
 import com.google.android.material.textview.MaterialTextView;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,14 +31,16 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.List;
 
 public class FiveDaysWeatherDetailsFragment extends Fragment {
+
     private WeatherViewModel weatherViewModel;
     private DailyWeatherAdapter dailyWeatherAdapter;
     private RecyclerView fiveDaysDailyWeather;
     private MaterialTextView cityName;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,13 +63,13 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.init();
 
-        weatherViewModel.getCurrentWeather(getSearchedLocation(),getUnit());
+        weatherViewModel.getCurrentWeather(getSearchedLocation(), UnitsUtil.getUnit(getUnit()));
 
         weatherViewModel.getCoordinatesLiveData().observe(getViewLifecycleOwner(), new Observer<Coordinates>() {
             @Override
             public void onChanged(Coordinates coordinates) {
-                weatherViewModel.getDailyWeather(getUnit());
-                weatherViewModel.getHistoricalWeather(getUnit());
+                weatherViewModel.getDailyWeather(UnitsUtil.getUnit(getUnit()));
+                weatherViewModel.getHistoricalWeather(UnitsUtil.getUnit(getUnit()));
             }
         });
 
@@ -69,7 +77,7 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
             @Override
             public void onChanged(List<DailyWeatherData> dailyWeatherData) {
                 if(dailyWeatherData != null) {
-                    dailyWeatherAdapter.setResults(dailyWeatherData, getUnitMeasure());
+                    dailyWeatherAdapter.setResults(dailyWeatherData, UnitsUtil.getUnitMeasure(UnitsUtil.getUnit(getUnit())));
                 }
             }
         });
@@ -80,20 +88,24 @@ public class FiveDaysWeatherDetailsFragment extends Fragment {
     }
 
     private String getUnit() {
-        if (getArguments().getString("unit").equals("true")) {
-            return "standard";
-        } else {
-            return "metric";
-        }
+        return getArguments().getString("unit");
     }
 
-    private String getUnitMeasure() {
-        if (getUnit().equals("standard")) {
-            return "°F";
-        } else if (getUnit().equals("metric")) {
-            return "°C";
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh: {
+                weatherViewModel.getCurrentWeather(getSearchedLocation(), UnitsUtil.getUnit(getUnit()));
+                ToastMessage.showMessage("New weather data updated!");
+            }
+            return true;
         }
-        return null;
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        menu.clear();
     }
 }
 

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity {
+
     private TextInputEditText searchLocation;
     private TextInputLayout searchLocationLayout;
     private SwitchMaterial setUnit, addToFavourite;
@@ -33,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     private WeatherViewModel weatherViewModel;
     private GpsTracker gpsTracker;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_location);
@@ -53,6 +55,7 @@ public class SearchActivity extends AppCompatActivity {
                 final String searchLocationText = String.valueOf(searchLocation.getText());
                 final Intent intent = new Intent(SearchActivity.this, LocationDetailsActivity.class);
                 intent.putExtra("unit", String.valueOf(setUnit.isChecked()));
+                intent.putExtra("addToFavStatus", String.valueOf(addToFavourite.isChecked()));
                 intent.putExtra("searchedLocation", searchLocationText);
                 startActivity(intent);
             }

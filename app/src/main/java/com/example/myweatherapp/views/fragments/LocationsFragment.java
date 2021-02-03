@@ -18,11 +18,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.SavedLocationAdapter;
 import com.example.myweatherapp.db.location.SavedLocation;
-import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.ToastMessage;
 import com.example.myweatherapp.viewmodels.SavedLocationViewModel;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
@@ -31,6 +29,7 @@ import com.example.myweatherapp.views.activities.LocationDetailsActivity;
 import java.util.List;
 
 public class LocationsFragment extends Fragment {
+
     private SavedLocationViewModel savedLocationViewModel;
     private RecyclerView savedLocationsRecycleView;
     private SavedLocationAdapter savedLocationAdapter;
@@ -45,7 +44,6 @@ public class LocationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_locations, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -97,12 +95,12 @@ public class LocationsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.deleteAllSavedLocations:
+            case R.id.deleteAllSavedLocations: {
                 savedLocationViewModel.deleteAllSavedLocations();
                 ToastMessage.showMessage("All saved locations were deleted.");
-                return true;
-
-            case R.id.search:
+                break;
+            }
+            case R.id.search: {
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -116,7 +114,8 @@ public class LocationsFragment extends Fragment {
                         return false;
                     }
                 });
-                return true;
+                break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,11 +1,8 @@
 package com.example.myweatherapp.db.location;
 
-import android.widget.ImageView;
-
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
 
 @Entity(tableName = "locations_table", indices = {@Index(value = {"cityName"}, unique = true)})
 public class SavedLocation {

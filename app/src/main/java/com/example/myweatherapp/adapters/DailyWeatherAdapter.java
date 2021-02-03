@@ -4,23 +4,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myweatherapp.R;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherData;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
+
 import com.google.android.material.textview.MaterialTextView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-    public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapter.WeatherResultHolder> {
+public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapter.WeatherResultHolder> {
+
     private List<DailyWeatherData> dailyWeatherDataList = new ArrayList<>();
     private String unitMeasure;
 
@@ -45,7 +47,6 @@ import java.util.List;
         Picasso.with(ApplicationClass.getInstance().getApplicationContext()).load(weatherIconUrl).into(holder.weatherIconImageView);
         holder.dayTextView.setText((DateUtil.getDayFromUnix(dailyWeatherData.getDt())));
     }
-
 
     @Override
     public int getItemCount() {

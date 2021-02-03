@@ -1,26 +1,24 @@
 package com.example.myweatherapp.views.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
 import com.example.myweatherapp.views.fragments.CurrentLocationFragment;
 import com.example.myweatherapp.views.fragments.LocationsFragment;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-
 public class MainActivity extends AppCompatActivity {
+
     private ViewPager mainActivityViewPager;
     private TabLayout mainActivityTabLayout;
     private ViewPagerAdapter viewPagerAdapter;
@@ -64,6 +62,4 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-
-
 }

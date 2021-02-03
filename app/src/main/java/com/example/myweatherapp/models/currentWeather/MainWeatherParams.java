@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MainWeatherParams {
+
     @SerializedName("temp")
     @Expose
     private Double temp;
@@ -21,16 +22,7 @@ public class MainWeatherParams {
         return temp;
     }
 
-    public Integer getIntTemp() {
-        return getTemp().intValue();
-    }
-
     public Double getFeelsLike() {
         return feelsLike;
     }
-
-    public Integer getIntFeelsLike() {
-        return getFeelsLike().intValue();
-    }
-
 }

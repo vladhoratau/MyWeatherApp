@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Coordinates {
+
     @SerializedName("lon")
     @Expose
     private Double lon;
@@ -24,5 +25,4 @@ public class Coordinates {
     public Double getLat() {
         return lat;
     }
-
 }

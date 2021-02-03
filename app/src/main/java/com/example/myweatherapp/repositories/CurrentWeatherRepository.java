@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.myweatherapp.R;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherTempInfo;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherResponse;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherTempInfo;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherResponse;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherResponse;
 import com.example.myweatherapp.services.CurrentWeatherDataService;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
@@ -27,6 +27,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CurrentWeatherRepository {
+
     private CurrentWeatherDataService currentWeatherDataService;
     private MutableLiveData<CurrentWeatherResponse> currentWeatherLiveData;
     private MutableLiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
@@ -51,24 +52,26 @@ public class CurrentWeatherRepository {
     }
 
     public void getCurrentWeather(String cityName, String unit) {
-        currentWeatherDataService.getCurrentWeather(cityName, ApplicationClass.getInstance()
-                .getString(R.string.api_key), unit).enqueue(new Callback<CurrentWeatherResponse>() {
-            @Override
-            public void onResponse(Call<CurrentWeatherResponse> call, Response<CurrentWeatherResponse> response) {
-                if (response.isSuccessful()) {
-                    currentWeatherLiveData.postValue(response.body());
-                    coordinatesLiveData.postValue(response.body().getCoordinates());
-                } else {
-                    currentWeatherLiveData.postValue(null);
-                }
-            }
+        currentWeatherDataService
+                .getCurrentWeather(cityName, ApplicationClass.getInstance()
+                .getString(R.string.api_key), unit)
+                .enqueue(new Callback<CurrentWeatherResponse>() {
+                    @Override
+                    public void onResponse(Call<CurrentWeatherResponse> call, Response<CurrentWeatherResponse> response) {
+                        if (response.isSuccessful()) {
+                            currentWeatherLiveData.postValue(response.body());
+                            coordinatesLiveData.postValue(response.body().getCoordinates());
+                        } else {
+                            currentWeatherLiveData.postValue(null);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<CurrentWeatherResponse> call, Throwable t) {
-                currentWeatherLiveData.postValue(null);
-                t.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<CurrentWeatherResponse> call, Throwable t) {
+                        currentWeatherLiveData.postValue(null);
+                        t.printStackTrace();
+                    }
+                });
     }
 
     public void getHourlyWeather(String unit) {
@@ -110,27 +113,30 @@ public class CurrentWeatherRepository {
     }
 
     public void getDailyWeather(String unit) {
-        currentWeatherDataService.getDailyWeather(coordinatesLiveData.getValue().getLat()
-                , coordinatesLiveData.getValue().getLon()
-                , unit, "current,minutely,hourly,alerts"
-                , ApplicationClass.getInstance().getString(R.string.api_key)).enqueue(new Callback<DailyWeatherResponse>() {
-            @Override
-            public void onResponse(Call<DailyWeatherResponse> call, Response<DailyWeatherResponse> response) {
-                if (response.isSuccessful()) {
-                    List<DailyWeatherData> recievedWeatherData = response.body().getDailyWeatherData();
-                    List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(1, 6));
-                    dailyWeatherLiveData.postValue(dailyWeatherData);
-                } else {
-                    dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
-                }
-            }
+        currentWeatherDataService
+                .getDailyWeather(coordinatesLiveData.getValue().getLat(),
+                    coordinatesLiveData.getValue().getLon(),
+                    unit,
+                    "current,minutely,hourly,alerts",
+                    ApplicationClass.getInstance().getString(R.string.api_key))
+                .enqueue(new Callback<DailyWeatherResponse>() {
+                    @Override
+                    public void onResponse(Call<DailyWeatherResponse> call, Response<DailyWeatherResponse> response) {
+                        if (response.isSuccessful()) {
+                            List<DailyWeatherData> recievedWeatherData = response.body().getDailyWeatherData();
+                            List<DailyWeatherData> dailyWeatherData = new ArrayList<>(recievedWeatherData.subList(1, 6));
+                            dailyWeatherLiveData.postValue(dailyWeatherData);
+                        } else {
+                            dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<DailyWeatherResponse> call, Throwable t) {
-                dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
-                t.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<DailyWeatherResponse> call, Throwable t) {
+                        dailyWeatherLiveData.postValue(new ArrayList<DailyWeatherData>());
+                        t.printStackTrace();
+                    }
+                });
     }
 
     public void getHistoricalDataForLast5Days(String unit) {
@@ -141,36 +147,37 @@ public class CurrentWeatherRepository {
     }
 
     private void getHistoricalWeatherForDay(String unit, Long dt) {
-        currentWeatherDataService.getHistoricalWeather(coordinatesLiveData.getValue().getLat(),
-                coordinatesLiveData.getValue().getLon(),
-                dt,
-                unit,
-                ApplicationClass.getInstance().getString(R.string.api_key))
+        currentWeatherDataService
+                .getHistoricalWeather(coordinatesLiveData.getValue().getLat(),
+                    coordinatesLiveData.getValue().getLon(),
+                    dt,
+                    unit,
+                    ApplicationClass.getInstance().getString(R.string.api_key))
                 .enqueue(new Callback<HourlyWeatherResponse>() {
-            @Override
-            public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
-                if(response.isSuccessful()) {
-                    List<HourlyWeatherData> receivedWeather = response.body().getHourlyWeatherDataList();
-                    DailyWeatherTempInfo dailyWeatherTempInfo = new DailyWeatherTempInfo(
-                            receivedWeather.get(0).getTemp(),
-                            receivedWeather.get(0).getTemp() - 2
-                    );
-                    DailyWeatherData newDailyWeatherData = new DailyWeatherData(
-                            receivedWeather.get(0).getDt(),
-                            dailyWeatherTempInfo,
-                            receivedWeather.get(0).getWeatherDataInfoList()
-                    );
-                    List<DailyWeatherData> newDailyWeather = dailyWeatherLiveData.getValue();
-                    newDailyWeather.add(newDailyWeatherData);
-                    dailyWeatherLiveData.postValue(newDailyWeather);
-                }
-            }
+                    @Override
+                    public void onResponse(Call<HourlyWeatherResponse> call, Response<HourlyWeatherResponse> response) {
+                        if(response.isSuccessful()) {
+                            List<HourlyWeatherData> receivedWeather = response.body().getHourlyWeatherDataList();
+                            DailyWeatherTempInfo dailyWeatherTempInfo = new DailyWeatherTempInfo(
+                                    receivedWeather.get(0).getTemp(),
+                                    receivedWeather.get(0).getTemp() - 2
+                            );
+                            DailyWeatherData newDailyWeatherData = new DailyWeatherData(
+                                    receivedWeather.get(0).getDt(),
+                                    dailyWeatherTempInfo,
+                                    receivedWeather.get(0).getWeatherDataInfoList()
+                            );
+                            List<DailyWeatherData> newDailyWeather = dailyWeatherLiveData.getValue();
+                            newDailyWeather.add(newDailyWeatherData);
+                            dailyWeatherLiveData.postValue(newDailyWeather);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<HourlyWeatherResponse> call, Throwable t) {
-                    t.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<HourlyWeatherResponse> call, Throwable t) {
+                            t.printStackTrace();
+                    }
+                });
     }
 
     public LiveData<CurrentWeatherResponse> getCurrentWeatherLiveData() {
@@ -192,6 +199,4 @@ public class CurrentWeatherRepository {
     public MutableLiveData<List<DailyWeatherData>> getDailyWeatherLiveData() {
         return dailyWeatherLiveData;
     }
-
-
 }

@@ -1,25 +1,24 @@
 package com.example.myweatherapp.viewmodels;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherData;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.repositories.CurrentWeatherRepository;
 
 import java.util.List;
 
 public class WeatherViewModel extends ViewModel {
+
     private CurrentWeatherRepository currentWeatherRepository;
     private LiveData<CurrentWeatherResponse> currentWeatherLiveData;
     private LiveData<List<HourlyWeatherData>> hourlyWeatherDataLiveData;
     private LiveData<List<HourlyWeatherData>> tomorrowWeatherDataLiveData;
     private LiveData<List<DailyWeatherData>> dailyWeatherDataLiveData;
     private LiveData<Coordinates> coordinatesLiveData;
-    private MutableLiveData<CurrentWeatherResponse> locationToSaveLiveData = new MutableLiveData<>();
 
     public void init() {
         currentWeatherRepository = new CurrentWeatherRepository();

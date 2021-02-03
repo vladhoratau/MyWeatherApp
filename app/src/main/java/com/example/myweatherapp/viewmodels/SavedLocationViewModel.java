@@ -1,8 +1,5 @@
 package com.example.myweatherapp.viewmodels;
 
-import android.database.sqlite.SQLiteConstraintException;
-import android.os.AsyncTask;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,6 +9,7 @@ import com.example.myweatherapp.repositories.SavedLocationsRepository;
 import java.util.List;
 
 public class SavedLocationViewModel extends ViewModel {
+
     private SavedLocationsRepository savedLocationsRepository;
     private LiveData<List<SavedLocation>> allSavedLocations;
 

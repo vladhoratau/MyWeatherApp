@@ -1,7 +1,5 @@
 package com.example.myweatherapp.views.fragments;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -13,14 +11,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.ViewPagerAdapter;
 import com.example.myweatherapp.services.GpsTracker;
-import com.example.myweatherapp.views.activities.SearchActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
@@ -28,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CurrentLocationFragment extends Fragment {
+
     private TodayWeatherDetailsFragment todayWeatherDetailsFragment;
     private TomorrowWeatherDetailsFragment tomorrowWeatherDetailsFragment;
     private FiveDaysWeatherDetailsFragment fiveDaysWeatherDetailsFragment;

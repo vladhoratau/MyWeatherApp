@@ -4,22 +4,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myweatherapp.R;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.utils.DateUtil;
+
 import com.google.android.material.textview.MaterialTextView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherResultHolder> {
+
     private List<HourlyWeatherData> hourlyWeatherDataList = new ArrayList<>();
     private String unitMeasure;
 
@@ -43,7 +45,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherR
         Picasso.with(ApplicationClass.getInstance().getApplicationContext()).load(weatherIconUrl).into(holder.weatherIconImageView);
         holder.hourTextView.setText(getFormattedHour(DateUtil.getHourFromUnix(hourlyWeatherData.getDt())));
     }
-
 
     @Override
     public int getItemCount() {

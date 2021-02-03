@@ -1,19 +1,19 @@
-package com.example.myweatherapp.models.OneCallWeather.DailyWeather;
+package com.example.myweatherapp.models.oneCallWeather.HourlyWeather;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DailyWeatherDataInfo {
+public class WeatherDataInfo {
 
     @SerializedName("description")
     @Expose
-    private String description;
+    String description;
 
     @SerializedName("icon")
     @Expose
-    private String icon;
+    String icon;
 
-    public DailyWeatherDataInfo(String description, String icon) {
+    public WeatherDataInfo(String description, String icon) {
         this.description = description;
         this.icon = icon;
     }

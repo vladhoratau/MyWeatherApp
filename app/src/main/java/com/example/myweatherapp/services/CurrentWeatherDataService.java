@@ -1,8 +1,8 @@
 package com.example.myweatherapp.services;
 
-import com.example.myweatherapp.models.OneCallWeather.DailyWeather.DailyWeatherResponse;
+import com.example.myweatherapp.models.oneCallWeather.DailyWeather.DailyWeatherResponse;
 import com.example.myweatherapp.models.currentWeather.CurrentWeatherResponse;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherResponse;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

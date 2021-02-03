@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedLocationAdapter extends RecyclerView.Adapter<SavedLocationAdapter.SavedLocationHolder> implements Filterable {
+
     private List<SavedLocation> savedLocations = new ArrayList<>();
     private List<SavedLocation> savedLocationsFull;
     private OnItemClickListener listener;

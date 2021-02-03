@@ -12,6 +12,7 @@ import com.example.myweatherapp.db.location.SavedLocationDatabase;
 import java.util.List;
 
 public class SavedLocationsRepository {
+
     private SavedLocationDao savedLocationDao;
     private LiveData<List<SavedLocation>> allSavedLocations;
 
@@ -22,30 +23,30 @@ public class SavedLocationsRepository {
     }
 
     public void insert(SavedLocation savedLocation) throws SQLiteConstraintException {
-        new InsertSavedLocationAsynkTask(savedLocationDao).execute(savedLocation);
+        new InsertSavedLocationAsyncTask(savedLocationDao).execute(savedLocation);
     }
 
     public void update(SavedLocation savedLocation) {
-        new UpdateSavedLocationAsynkTask(savedLocationDao).execute(savedLocation);
+        new UpdateSavedLocationAsyncTask(savedLocationDao).execute(savedLocation);
     }
 
     public void delete(SavedLocation savedLocation) {
-        new DeleteSavedLocationAsynkTask(savedLocationDao).execute(savedLocation);
+        new DeleteSavedLocationAsyncTask(savedLocationDao).execute(savedLocation);
     }
 
     public void deleteAllSavedLocations() {
-        new DeleteAllSavedLocationAsynkTask(savedLocationDao).execute();
+        new DeleteAllSavedLocationAsyncTask(savedLocationDao).execute();
     }
 
     public LiveData<List<SavedLocation>> getAllSavedLocations() {
         return allSavedLocations;
     }
 
-    private static class InsertSavedLocationAsynkTask extends AsyncTask<SavedLocation, Void, Void> {
+    private static class InsertSavedLocationAsyncTask extends AsyncTask<SavedLocation, Void, Void> {
 
         private SavedLocationDao savedLocationDao;
 
-        private InsertSavedLocationAsynkTask(SavedLocationDao savedLocationDao) {
+        private InsertSavedLocationAsyncTask(SavedLocationDao savedLocationDao) {
             this.savedLocationDao = savedLocationDao;
         }
 
@@ -60,11 +61,11 @@ public class SavedLocationsRepository {
         }
     }
 
-    private static class UpdateSavedLocationAsynkTask extends AsyncTask<SavedLocation, Void, Void> {
+    private static class UpdateSavedLocationAsyncTask extends AsyncTask<SavedLocation, Void, Void> {
 
         private SavedLocationDao savedLocationDao;
 
-        private UpdateSavedLocationAsynkTask(SavedLocationDao savedLocationDao) {
+        private UpdateSavedLocationAsyncTask(SavedLocationDao savedLocationDao) {
             this.savedLocationDao = savedLocationDao;
         }
 
@@ -75,11 +76,11 @@ public class SavedLocationsRepository {
         }
     }
 
-    private static class DeleteSavedLocationAsynkTask extends AsyncTask<SavedLocation, Void, Void> {
+    private static class DeleteSavedLocationAsyncTask extends AsyncTask<SavedLocation, Void, Void> {
 
         private SavedLocationDao savedLocationDao;
 
-        private DeleteSavedLocationAsynkTask(SavedLocationDao savedLocationDao) {
+        private DeleteSavedLocationAsyncTask(SavedLocationDao savedLocationDao) {
             this.savedLocationDao = savedLocationDao;
         }
 
@@ -90,11 +91,11 @@ public class SavedLocationsRepository {
         }
     }
 
-    private static class DeleteAllSavedLocationAsynkTask extends AsyncTask<Void, Void, Void> {
+    private static class DeleteAllSavedLocationAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private SavedLocationDao savedLocationDao;
 
-        private DeleteAllSavedLocationAsynkTask(SavedLocationDao savedLocationDao) {
+        private DeleteAllSavedLocationAsyncTask(SavedLocationDao savedLocationDao) {
             this.savedLocationDao = savedLocationDao;
         }
 

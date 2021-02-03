@@ -1,7 +1,6 @@
 package com.example.myweatherapp.utils;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,5 +41,4 @@ public class DateUtil {
         }
         return unixDateList;
     }
-
 }

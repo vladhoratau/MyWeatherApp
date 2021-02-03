@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-
 public class CurrentWeatherResponse {
+
     @SerializedName("coord")
     @Expose
     private Coordinates coordinates;
@@ -54,6 +54,4 @@ public class CurrentWeatherResponse {
     public Country getCountry() {
         return country;
     }
-
-
 }

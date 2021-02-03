@@ -2,6 +2,9 @@ package com.example.myweatherapp.views.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,9 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.adapters.WeatherAdapter;
 import com.example.myweatherapp.models.currentWeather.Coordinates;
-import com.example.myweatherapp.models.OneCallWeather.HourlyWeather.HourlyWeatherData;
+import com.example.myweatherapp.models.oneCallWeather.HourlyWeather.HourlyWeatherData;
 import com.example.myweatherapp.utils.DateUtil;
+import com.example.myweatherapp.utils.ToastMessage;
+import com.example.myweatherapp.utils.UnitsUtil;
+import com.example.myweatherapp.viewmodels.SavedLocationViewModel;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
+
 import com.google.android.material.textview.MaterialTextView;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -26,7 +33,9 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.List;
 
 public class TomorrowWeatherDetailsFragment extends Fragment {
+
     private WeatherViewModel weatherViewModel;
+    private SavedLocationViewModel savedLocationViewModel;
     private WeatherAdapter weatherAdapter;
     private RecyclerView tomorrowHourlyWeather;
     private MaterialTextView cityName, tomorrowDate;
@@ -34,6 +43,7 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +59,6 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
         cityName = view.findViewById(R.id.tomorrowCityName);
         tomorrowDate = view.findViewById(R.id.tomorrowDate);
 
-
         cityName.setText(WordUtils.capitalize(getSearchedLocation(),',', '-'));
         tomorrowDate.setText(DateUtil.getTomorrowDate());
 
@@ -57,15 +66,16 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
         tomorrowHourlyWeather.setLayoutManager(new LinearLayoutManager(getContext()));
         tomorrowHourlyWeather.setAdapter(weatherAdapter);
 
+        savedLocationViewModel = new ViewModelProvider(this).get(SavedLocationViewModel.class);
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.init();
 
-        weatherViewModel.getCurrentWeather(getSearchedLocation(), getUnit());
+        weatherViewModel.getCurrentWeather(getSearchedLocation(), UnitsUtil.getUnit(getUnit()));
 
         weatherViewModel.getCoordinatesLiveData().observe(getViewLifecycleOwner(), new Observer<Coordinates>() {
             @Override
             public void onChanged(Coordinates coordinates) {
-                weatherViewModel.getHourlyWeather(getUnit());
+                weatherViewModel.getHourlyWeather(UnitsUtil.getUnit(getUnit()));
             }
         });
 
@@ -73,7 +83,7 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
             @Override
             public void onChanged(List<HourlyWeatherData> hourlyWeatherData) {
                 if(hourlyWeatherData != null) {
-                    weatherAdapter.setResults(hourlyWeatherData, getUnitMeasure());
+                    weatherAdapter.setResults(hourlyWeatherData, UnitsUtil.getUnitMeasure(UnitsUtil.getUnit(getUnit())));
                 }
             }
         });
@@ -84,19 +94,23 @@ public class TomorrowWeatherDetailsFragment extends Fragment {
     }
 
     private String getUnit() {
-        if (getArguments().getString("unit").equals("true")) {
-            return "standard";
-        } else {
-            return "metric";
-        }
+        return getArguments().getString("unit");
     }
 
-    private String getUnitMeasure() {
-        if (getUnit().equals("standard")) {
-            return "°F";
-        } else if (getUnit().equals("metric")) {
-            return "°C";
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh: {
+                weatherViewModel.getCurrentWeather(getSearchedLocation(), UnitsUtil.getUnit(getUnit()));
+                ToastMessage.showMessage("New weather data updated!");
+                break;
+            }
         }
-        return null;
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+        menu.clear();
     }
 }
