@@ -1,21 +1,31 @@
 package com.example.myweatherapp.views.activities;
 
 import android.content.Intent;
+
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+
+import android.util.Log;
 import android.view.View;
 
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.myweatherapp.R;
 import com.example.myweatherapp.services.GpsTracker;
+
+
 import com.example.myweatherapp.utils.ApplicationClass;
 import com.example.myweatherapp.viewmodels.WeatherViewModel;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,6 +35,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static androidx.constraintlayout.motion.widget.Debug.getLocation;
+
+
 public class SearchActivity extends AppCompatActivity {
 
     private TextInputEditText searchLocation;
@@ -33,6 +46,9 @@ public class SearchActivity extends AppCompatActivity {
     private MaterialButton viewWeather;
     private WeatherViewModel weatherViewModel;
     private GpsTracker gpsTracker;
+    private FusedLocationProviderClient fusedLocationClient;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +62,7 @@ public class SearchActivity extends AppCompatActivity {
         addToFavourite = findViewById(R.id.addToFavourite);
         viewWeather = findViewById(R.id.viewWeather);
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.init();
 
@@ -61,6 +78,9 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         searchLocationLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,31 +93,47 @@ public class SearchActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                searchLocation.setText(getLocation());
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(SearchActivity.this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    Log.e("Locatie", location.getLatitude() + " " + location.getLongitude());
+                                }
+
+
+                            }
+                        });
+
             }
         });
+
+
     }
 
-    private String getLocation() {
-        gpsTracker = new GpsTracker(SearchActivity.this);
-        if (gpsTracker.canGetLocation()) {
-            double latitude = gpsTracker.getLatitude();
-            double longitude = gpsTracker.getLongitude();
 
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = null;
-            try {
-                addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String address = addresses.get(0).getAddressLine(0);
-            String cityNamePostalCode = address.split(",")[1];
-            cityNamePostalCode = cityNamePostalCode.replaceAll("[0-9]", "");
-            return cityNamePostalCode.trim();
-        } else {
-            gpsTracker.showSettingsAlert();
-        }
-        return "";
-    }
+
+//    private String getLocation() {
+//        gpsTracker = new GpsTracker(SearchActivity.this);
+//        if (gpsTracker != null && gpsTracker.canGetLocation()) {
+//            double latitude = gpsTracker.getLatitude();
+//            double longitude = gpsTracker.getLongitude();
+//
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addresses = null;
+//            try {
+//                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            String address = addresses.get(0).getAddressLine(0);
+//            String cityNamePostalCode = address.split(",")[1];
+//            cityNamePostalCode = cityNamePostalCode.replaceAll("[0-9]", "");
+//            return cityNamePostalCode.trim();
+//        } else {
+//            gpsTracker.showSettingsAlert();
+//        }
+//        return "";
+//    }
+
 }
